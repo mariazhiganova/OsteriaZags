@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "osteriazags"
+version = "0.1.0"
+description = ""
+authors = ["maria_zhiganova <my.nik.mariann@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+django = "^5.2.8"
+flake8 = "^7.3.0"
+psycopg2-binary = "^2.9.11"
+python-dotenv = "^1.2.1"
+isort = "^7.0.0"
+black = "^25.11.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
