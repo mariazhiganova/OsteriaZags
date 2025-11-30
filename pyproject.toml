@@ -13,8 +13,19 @@ psycopg2-binary = "^2.9.11"
 python-dotenv = "^1.2.1"
 isort = "^7.0.0"
 black = "^25.11.0"
+pillow = "^12.0.0"
+celery = "^5.5.3"
+django-celery-beat = "^2.8.1"
+redis = "^7.1.0"
+gunicorn = "^23.0.0"
+docker = "^7.1.0"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "coverage (>=7.12.0,<8.0.0)"
+]
