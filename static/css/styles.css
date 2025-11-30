@@ -10889,7 +10889,33 @@ p {
   padding-left: 2rem;
   padding-right: 2rem;
 }
+.btn-outline-primary {
+    color: #8B4513 !important;        /* Коричневый текст */
+    border-color: #8B4513 !important;  /* Коричневая рамка */
+    background-color: white !important; /* Белый фон */
+}
 
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+    color: white !important;           /* Белый текст при наведении */
+    background-color: #8B4513 !important; /* Коричневый фон при наведении */
+    border-color: #8B4513 !important;  /* Коричневая рамка */
+}
+
+.btn-primary {
+    background-color: #8B4513 !important;
+    border-color: #8B4513 !important;
+    color: white !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #654321 !important;
+    border-color: #654321 !important;
+    color: white !important;
+}
 #mainNav {
   background-color: rgba(47, 23, 15, 0.9);
   font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
