@@ -1,85 +1,218 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <title>Business Casual - Start Bootstrap Theme</title>
-    <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}"/>
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet"/>
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
-</head>
-<body>
-<header>
-    <h1 class="site-heading text-center text-faded d-none d-lg-block">
-        <span class="site-heading-upper text-primary mb-3">A Free Bootstrap Business Theme</span>
-        <span class="site-heading-lower">Business Casual</span>
-    </h1>
-</header>
-<!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
-    <div class="container">
-        <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Start Bootstrap</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
-                class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html">Home</a></li>
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="about.html">About</a></li>
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="products.html">Products</a></li>
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="store.html">Store</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load content_tags %}
+{% get_content 'main-description' as main %}
+
 <section class="page-section clearfix">
     <div class="container">
         <div class="intro">
-            <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'assets/img/about.jpg' %}" alt="..."/>
+            <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src='{{ main.image.url }}' alt='{{ main.title }}'
+                 style="object-fit: cover; width: 900px; height: 800px;"/>
             <div class="intro-text left-0 text-center bg-faded p-5 rounded">
                 <h2 class="section-heading mb-4">
-                    <span class="section-heading-upper">Fresh Coffee</span>
-                    <span class="section-heading-lower">Worth Drinking</span>
+                    <span class="section-heading-upper">{{ main.subtitle }}</span>
+                    <span class="section-heading-lower">{{ main.title }}</span>
                 </h2>
-                <p class="mb-3">Every cup of our quality artisan coffee starts with locally sourced, hand picked
-                    ingredients. Once you try it, our coffee will be a blissful addition to your everyday morning
-                    routine - we guarantee it!</p>
-                <div class="intro-button mx-auto"><a class="btn btn-primary btn-xl" href="#!">Visit Us Today!</a></div>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="page-section cta">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <div class="cta-inner bg-faded text-center rounded">
-                    <h2 class="section-heading mb-4">
-                        <span class="section-heading-upper">Our Promise</span>
-                        <span class="section-heading-lower">To You</span>
-                    </h2>
-                    <p class="mb-0">When you walk into our shop to start your day, we are dedicated to providing you
-                        with friendly service, a welcoming atmosphere, and above all else, excellent products made with
-                        the highest quality ingredients. If you are not satisfied, please let us know and we will do
-                        whatever we can to make things right!</p>
+                <p class="mb-3">
+                    {{ main.body|linebreaks }}
+                </p>
+                <div class="intro-button mx-auto mb-3">
+                    <a class="btn btn-primary btn-xl" href="{% url 'restaurant:reservation_create'%}">
+                        Забронировать столик!
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<footer class="footer text-faded text-center py-5">
-    <div class="container"><p class="m-0 small">Copyright &copy; Your Website 2023</p></div>
-</footer>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="{% static 'js/scripts.js' %}"></script>
-</body>
-</html>
+<div class="clearfix py-4"></div>
+<section class="page-section cta">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-6 mb-4">
+                <div class="cta-inner bg-faded rounded h-100 p-4 shadow-sm">
+                    <h2 class="section-heading mb-4">
+                        <span class="section-heading-upper">Как нас найти?</span>
+                        <span class="section-heading-lower">Контакты</span>
+                    </h2>
+                    <div class="contact-details">
+                        <div class="d-flex align-items-center mb-3 p-3 bg-light rounded">
+                            <i class="fas fa-map-marker-alt text-primary me-3 fs-5"></i>
+                            <div>
+                                <strong class="d-block">Каширское шоссе 51</strong>
+                                <small class="text-muted">Домодедово</small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-3 p-3 bg-light rounded">
+                            <i class="fas fa-phone text-primary me-3 fs-5"></i>
+                            <div>
+                                <strong class="d-block">+7 (968) 777-95-50</strong>
+                                <small class="text-muted">Телефон для бронирования</small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-4 p-3 bg-light rounded">
+                            <i class="fas fa-clock text-primary me-3 fs-5"></i>
+                            <div>
+                                <strong class="d-block">Ежедневно 09:00-23:00</strong>
+                                <small class="text-muted">Без перерывов и выходных</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center pt-3">
+                        <p class="mb-0 text-dark">
+                            Забронируйте стол заранее и гарантируйте себе лучший вечер!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-5 col-lg-6 mb-4">
+                <div class="cta-inner bg-faded rounded h-100 p-4">
+                    <h2 class="section-heading mb-4">
+                        <span class="section-heading-upper">Связаться с нами</span>
+                        <span class="section-heading-lower">Напишите нам</span>
+                    </h2>
+
+                    <div id="contactMessage" class="mb-3" style="display: none;">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>✅ Ваше сообщение отправлено администратору! Мы свяжемся с вами в ближайшее
+                                время!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    </div>
+
+                    <form method="post" id="contactForm">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label small text-muted">
+                                <i class="fas fa-user me-2"></i>Имя
+                            </label>
+                            <input type="text" name="name" id="name" class="form-control form-control-sm"
+                                   placeholder="Введите имя">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label small text-muted">
+                                <i class="fas fa-phone me-2"></i>Номер телефона
+                            </label>
+                            <input type="tel" name="phone" id="phone" class="form-control form-control-sm"
+                                   placeholder="Ваш телефон">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label small text-muted">
+                                <i class="fas fa-envelope me-2"></i>Email
+                            </label>
+                            <input type="email" name="email" id="email" class="form-control form-control-sm"
+                                   placeholder="your@email.com">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="message" class="form-label small text-muted">
+                                <i class="fas fa-comment me-2"></i>Сообщение
+                            </label>
+                            <textarea name="message" id="message" class="form-control form-control-sm"
+                                      rows="3"
+                                      placeholder="Расскажите, чем мы можем вам помочь..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-sm w-100">Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    console.log('JavaScript загружен!');
+
+    // Функция для показа УСПЕШНОГО сообщения
+    function showSuccessMessage() {
+        const messageDiv = document.getElementById('contactMessage');
+        messageDiv.innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>✅ Ваше сообщение отправлено администратору! Мы свяжемся с вами в ближайшее время!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+        messageDiv.style.display = 'block';
+
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 5000);
+    }
+
+    // Функция для показа ОШИБКИ
+    function showErrorMessage(message) {
+        const messageDiv = document.getElementById('contactMessage');
+        messageDiv.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>❌ ${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+        messageDiv.style.display = 'block';
+
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 5000);
+    }
+
+    // Обработчик формы
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM загружен, ищем форму...');
+        const contactForm = document.getElementById('contactForm');
+
+        if (contactForm) {
+            console.log('Форма найдена, добавляем обработчик...');
+            contactForm.addEventListener('submit', function(event) {
+                console.log('Форма отправляется!');
+                event.preventDefault();
+
+                // Проверяем обязательные поля
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+
+                console.log('Телефон:', phone, 'Email:', email);
+
+                if (!phone && !email) {
+                    showErrorMessage('Заполните телефон или email');
+                    return;
+                }
+
+                // Собираем данные формы
+                const formData = new FormData(this);
+
+                // Отправляем AJAX запрос
+                fetch('', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    console.log('Ответ сервера:', response.status);
+                    if (response.ok) {
+                        showSuccessMessage();
+                        document.getElementById('contactForm').reset();
+                    } else {
+                        showErrorMessage('Ошибка отправки сообщения. Попробуйте позже.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    showErrorMessage('Ошибка соединения с сервером');
+                });
+            });
+        } else {
+            console.error('Форма не найдена!');
+        }
+    });
+</script>
+{% endblock %}

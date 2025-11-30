@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 col-md-10 mb-4">
+            <div class="text-center p-4">
+                <h2 class="section-heading mb-0 text-white">
+                    <i class="fas fa-history me-2"></i>
+                    Ваша история бронирований
+                </h2>
+                <p class="text-light mb-0" style="text-shadow: 0 1px 3px rgba(0,0,0,0.8);">
+                    Все ваши посещения нашей Остерии
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        {% for reservation in reservations %}
+        <div class="ol-xl-5 col-lg-3 mb-4">
+            <div class="cta-inner bg-faded rounded h-100 p-4">
+                <div class="card-body">
+                    <h2 class="section-heading mb-4">
+                        <span class="section-heading-upper">
+                            {% if reservation.is_active == True %}
+                            Актуальное бронирование
+                            {% else %}
+                            Прошедшее бронирование
+                            {% endif %}
+                        </span>
+                    </h2>
+                    <p><strong>Стол №{{ reservation.table.number }}</strong></p>
+                    <p>📅 {{ reservation.start_time|date:"d.m.Y" }}</p>
+                    <p>⏰ {{ reservation.start_time|date:"H:i" }}</p>
+                    <p>👥 {{ reservation.guests_count }} гостей</p>
+                    {% if reservation.is_active == True %}
+                    <a href="{% url 'restaurant:reservation_update' reservation.pk %}"
+                       class="btn btn btn-primary mb-3">Изменить бронирование</a>
+
+                    <a href="{% url 'restaurant:reservation_delete' reservation.pk %}"
+                       class="btn btn btn-light mb-3">Отменить бронирование</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}
