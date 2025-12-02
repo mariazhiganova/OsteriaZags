@@ -10,6 +10,8 @@ services:
       # gunicorn - запуск продакшн-сервера
     env_file:
       - .env  # Загрузить переменные окружения из файла .env
+    environment:
+      - DATABASE_HOST=db
     volumes:
       - .:/app  # Синхронизировать текущую директорию с /app в контейнере
       - static_volume:/app/staticfiles  # Общее хранилище для статических файлов
