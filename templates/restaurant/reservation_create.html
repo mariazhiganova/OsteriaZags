@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load content_tags %}
+{% get_content 'reservation' as r %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="ol-xl-5 col-lg-6 mb-4">
+            <div class="cta-inner bg-faded rounded h-100 p-4">
+                <form method="post">
+                    <h2 class="section-heading mb-4">
+                        <span class="section-heading-upper">
+                            {% if reservation %}
+                            Изменить бронь
+                            {% else %}
+                            Создать бронирование
+                            {% endif %}
+                        </span>
+                    </h2>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div id="tableStatus" class="form-text mt-2 mb-3"></div>
+
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        Сохранить
+                    </button>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="page-section about-heading">
+    <div class="container">
+        <div class="about-heading-content">
+            <div class="row">
+                <div class="col-xl-9 col-lg-10 mx-auto">
+                    <div class="bg-faded rounded p-5">
+                        <h2 class="section-heading mb-4">
+                            <span class="section-heading-upper">{{ r.subtitle }}</span>
+                            <span class="section-heading-lower">{{ r.title }}</span>
+                        </h2>
+                        <p>{{ r.body|linebreaks }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const guestsCountInput = document.getElementById('id_guests_count');
+        const startTimeInput = document.getElementById('id_start_time');
+        const durationInput = document.getElementById('id_duration');
+        const tableSelect = document.getElementById('id_table');
+        const statusDiv = document.getElementById('tableStatus');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // ДАННЫЕ ДЛЯ AJAX-ФИЛЬТРАЦИИ
+        const currentTableId = '{{ form.instance.table.id|default_if_none:"" }}';
+        const excludeBookingId = '{{ form.instance.id|default_if_none:"" }}';
+
+        function updateTables() {
+    const guestsCount = guestsCountInput.value;
+    const startTime = startTimeInput.value;
+    const duration = durationInput.value;
+
+    if (guestsCount && startTime && duration) {
+        statusDiv.textContent = '🔍 Ищем доступные столы...';
+        submitBtn.disabled = true;
+
+        let url = `/get-available-tables/?guests_count=${guestsCount}&start_time=${startTime}&duration=${duration}`;
+
+        if (currentTableId) {
+            url += `&current_table_id=${currentTableId}`;
+        }
+        if (excludeBookingId) {
+            url += `&exclude_booking_id=${excludeBookingId}`;
+        }
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    tableSelect.innerHTML = data.options_html;
+
+                    if (data.count > 0) {
+                        statusDiv.textContent = `Найдено ${data.count} доступных столов`;
+                        submitBtn.disabled = false;
+                    } else {
+                        statusDiv.textContent = 'Нет доступных столов для выбранных параметров';
+                        submitBtn.disabled = true;
+                    }
+                } else {
+                    // Показываем конкретную ошибку
+                    statusDiv.textContent = data.error || 'Ошибка при загрузке столов';
+                    submitBtn.disabled = true;
+                }
+            })
+            .catch(error => {
+                statusDiv.textContent = 'Ошибка при загрузке столов';
+                submitBtn.disabled = true;
+            });
+    } else {
+        statusDiv.textContent = 'Заполните количество гостей, дату и продолжительность';
+        submitBtn.disabled = true;
+    }
+}
+
+        // ОБЩИЕ ОБРАБОТЧИКИ ДЛЯ СОЗДАНИЯ И РЕДАКТИРОВАНИЯ
+        guestsCountInput.addEventListener('blur', updateTables);
+        startTimeInput.addEventListener('blur', updateTables);
+        durationInput.addEventListener('blur', updateTables);
+
+        // ЗАПУСК AJAX-ФИЛЬТРАЦИИ ПРИ ЗАГРУЗКЕ
+        updateTables();
+    });
+</script>
+{% endblock %}

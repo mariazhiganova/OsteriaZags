@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="ol-xl-5 col-lg-4 mb-4">
+            <div class="cta-inner bg-faded rounded h-100 p-4">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <h2 class="section-heading mb-4">
+                            <span class="section-heading-upper">Вы действительно хотите снять бронь?</span>
+                        </h2>
+                        <p><strong>Стол №{{ reservation.table.number }}</strong></p>
+                        <p>📅 {{ reservation.start_time|date:"d.m.Y" }}</p>
+                        <p>⏰ {{ reservation.start_time|date:"H:i" }}</p>
+                        <p>👥 {{ reservation.guests_count }} гостей</p>
+                        <button type="submit" class="btn btn-danger">
+                            Удалить
+                        </button>
+                        <a href="{% url 'restaurant:reservation_list' %}"
+                           class="btn btn-primary">Отменить снятие брони</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

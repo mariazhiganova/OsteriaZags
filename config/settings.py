@@ -10,9 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
 
-from users.models import CustomUser
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,8 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_celery_beat',
+
     'users',
     'restaurant',
+    'content',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +131,34 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-AUTH_USER_MODEL = CustomUser
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'my.nik.mariann@gmail.com'
+EMAIL_HOST_PASSWORD = os.getenv('MY_EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+LOGIN_REDIRECT_URL = 'restaurant:home'
+LOGIN_URL = 'users:login'
+CELERY_BROKER_URL = os.getenv('REDIS_BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('REDIS_RESULT_BACKEND', 'redis://localhost:6379/0')
+CELERY_TIMEZONE = TIME_ZONE
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60
+
+
+CELERY_BEAT_SCHEDULE = {
+    'task-name': {
+        'task': 'restaurant.tasks.inactivate_reservation',
+        'schedule': timedelta(hours=1),
+    },
+}
+STATIC_ROOT = BASE_DIR / 'staticfiles'
